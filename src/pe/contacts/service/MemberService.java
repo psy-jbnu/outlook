@@ -1,9 +1,12 @@
-package pe.addressbook.service;
+package pe.contacts.service;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import pe.addressbook.vo.MemberVO;
-
+import pe.contacts.vo.MemberVO;
+/**
+ * MemberServiceImpl에 구현할 메소드 정의
+ * @author      Seungyeop Park 
+ */
 public interface MemberService {
 	void memberAdd(Scanner sc);
 	void memberList();
@@ -11,7 +14,6 @@ public interface MemberService {
 	void memberDel(Scanner sc);
 	void memberRevise(Scanner sc);
 	void memberListKind(Scanner sc);
-	void MemberWrite();
-	void MemberRead();
-
+	void memberDefault();
+	void exit(Scanner sc);
 }

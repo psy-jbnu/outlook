@@ -1,11 +1,9 @@
-package pe.addressbook.main;
+package pe.contacts.main;
 
-import java.io.File;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import pe.addressbook.service.MemberService;
-import pe.addressbook.service.MemberServiceImpl;
+import pe.contacts.service.MemberService;
+import pe.contacts.service.MemberServiceImpl;
 /**
  * 프로그램을 실행하는 클래스
  * @author      Seungyeop Park 
@@ -15,7 +13,6 @@ public class MemberMain {
 	public static void main(String[] args) {
 		MemberService memberService = new MemberServiceImpl();
 		System.out.println("프로그램 구동 중");
-		memberService.MemberRead();
 		boolean isExit = false; 
 		do {
 			Scanner sc = new Scanner(System.in);
@@ -27,20 +24,24 @@ public class MemberMain {
 			System.out.println("연락처를 검색하고 싶으시면 4번");
 			System.out.println("연락처를 수정하고 싶으시면 5번");
 			System.out.println("연락처를 삭제하고 싶으시면 6번");
-			System.out.println("프로그램을 종료하고 싶으시면 7번을 눌러주세요. 모든 데이터 삭제 후 종료는 8번입니다.");
+			System.out.println("프로그램을 종료하고 싶으시면 7번을 눌러주세요");
+			System.out.println("모든 데이터 삭제는 8번입니다.");
 			System.out.println("==================================================================");
-			boolean isWrong = false;
 			int choice = 0;
+			
 			do {
 				try {
-					choice = sc.nextInt();
-					isWrong = false;
-				} catch (InputMismatchException e) {
-					System.out.println("다시 입력해주세요.");
-					sc = new Scanner(System.in);
-					isWrong = true;
+					String invalue = sc.nextLine();
+					choice = Integer.parseInt(invalue);			
+				} catch (Exception e) {
+					System.out.println("잘못된 값을 입력하셨습니다. 숫자를 입력하여 주십시오.");
 				}
-			}while (isWrong);
+				if (choice <= 0) {
+					System.out.println("잘못된 값을 입력하셨습니다. 0 또는 0보다 큰 정수를 입력해주십시오.");
+				}else {
+					break;
+				}
+			} while (true);
 			switch (choice) {
 			case 1:
 				memberService.memberAdd(sc);
@@ -69,22 +70,16 @@ public class MemberMain {
 			case 7:
 				System.out.println("프로그램 종료");
 				isExit = true;
+				memberService.exit(sc);
 				sc.close();
-				memberService.MemberWrite();
 				break;
 			case 8:
 				System.out.println("연락처 삭제 중...");
-				File members = new File("save/members.ser");
-				File names = new File("save/names.ser");
-				File kinds = new File("save/kinds");
-				if(members.delete() && names.delete() && kinds.delete()) {
-					System.out.println("모든 연락처를 삭제하였습니다.");
-				}
-				isExit = true;
-				sc.close();
+				memberService.memberDefault();
+				System.out.println("모든 연락처를 삭제하였습니다.");
 				break;
 			default:
-				System.out.println("키를 잘못 누르셨습니다. 다시 시도해주십시오.");
+				System.out.println("잘못 된 값입니다. 다시 입력해주십시오.");
 				break;
 			}
 		} while (!isExit);	
